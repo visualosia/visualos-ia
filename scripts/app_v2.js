@@ -1,3 +1,4 @@
+alert("CARGÓ app_v2.js");
 let pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
 let pacienteActivo = null;
 let pacientes = [

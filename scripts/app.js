@@ -19,6 +19,7 @@ let pacientes = [
 mostrarPacientes();
 
 function nuevoPaciente() {
+  console.log("CLICK NUEVO PACIENTE");
   let form = document.getElementById("formPaciente");
   form.style.display = "block";
 }

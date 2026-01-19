@@ -10,9 +10,15 @@ function mostrarPacientes() {
 
   contenedor.innerHTML = "";
 
-  pacientes.forEach(function(paciente) {
+  pacientes.forEach(function(paciente, index) {
     let div = document.createElement("div");
     div.innerHTML = paciente.nombre + " - " + paciente.edad + " años";
+    div.style.cursor = "pointer";
+
+    div.onclick = function () {
+      abrirFichaPaciente(index);
+    };
+
     contenedor.appendChild(div);
   });
 }

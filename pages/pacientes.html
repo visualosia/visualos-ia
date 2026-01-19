@@ -4,32 +4,53 @@
     <title>VisualOS IA - Pacientes</title>
     <link rel="stylesheet" href="../styles/main.css" />
   </head>
+
   <body>
-    <h1>Pacientes</h1>
     <div class="app">
-  <div class="sidebar">
-    <h2>VisualOS IA</h2>
-    <a href="../index.html">Inicio</a>
-    <a href="login.html">Login</a>
-    <a href="pacientes.html">Pacientes</a>
-  </div>
- <div class="content">
-  <h1>Pacientes</h1>
-  <div id="listaPacientes"></div>
-<div id="fichaPaciente" style="display:none;">
-  <h2>Ficha del paciente</h2>
-  <p id="detallePaciente"></p>
-  <label>Motivo de consulta</label><br />
-<textarea id="motivoConsulta" rows="3"></textarea><br /><br />
-<label>Observaciones</label><br />
-<textarea id="observaciones" rows="3"></textarea><br /><br />
-<button onclick="guardarFicha()">Guardar ficha</button>
-<button onclick="nuevoPaciente()">Nuevo paciente</button>
-      <div id="formPaciente" style="display:none; margin-top:20px;">
-  <input type="text" id="nombrePaciente" placeholder="Nombre del paciente" /><br /><br />
-  <input type="number" id="edadPaciente" placeholder="Edad" /><br /><br />
-  <button onclick="guardarPaciente()">Guardar</button>
-</div>
-<script src="../scripts/app_v2.js"></script>     
+      <div class="sidebar">
+        <h2>VisualOS IA</h2>
+        <a href="../index.html">Inicio</a>
+        <a href="login.html">Login</a>
+        <a href="pacientes.html">Pacientes</a>
+      </div>
+
+      <div class="content">
+        <h1>Pacientes</h1>
+
+        <div id="listaPacientes"></div>
+
+        <div id="fichaPaciente" style="display:none;">
+          <h2>Ficha del paciente</h2>
+          <p id="detallePaciente"></p>
+
+          <label>Motivo de consulta</label><br />
+          <textarea id="motivoConsulta" rows="3"></textarea><br /><br />
+
+          <label>Observaciones</label><br />
+          <textarea id="observaciones" rows="3"></textarea><br /><br />
+
+          <button onclick="guardarFicha()">Guardar ficha</button>
+          <button onclick="nuevoPaciente()">Nuevo paciente</button>
+        </div>
+
+        <div id="formPaciente" style="display:none; margin-top:20px;">
+          <input
+            type="text"
+            id="nombrePaciente"
+            placeholder="Nombre del paciente"
+          /><br /><br />
+
+          <input
+            type="number"
+            id="edadPaciente"
+            placeholder="Edad"
+          /><br /><br />
+
+          <button onclick="guardarPaciente()">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../scripts/app_v2.js"></script>
   </body>
-</html>
+</html> 

@@ -49,3 +49,16 @@ function guardarPaciente() {
 }
 
 mostrarPacientes();
+
+function abrirFichaPaciente(index) {
+  let paciente = pacientes[index];
+
+  let ficha = document.getElementById("fichaPaciente");
+  let detalle = document.getElementById("detallePaciente");
+
+  detalle.innerHTML =
+    "<strong>Nombre:</strong> " + paciente.nombre + "<br>" +
+    "<strong>Edad:</strong> " + paciente.edad + " años";
+
+  ficha.style.display = "block";
+}

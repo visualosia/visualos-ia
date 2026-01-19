@@ -1,10 +1,6 @@
 alert("CARGÓ app_v2.js");
 let pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
 let pacienteActivo = null;
-let pacientes = [
-  { nombre: "Juan Pérez", edad: 45 },
-  { nombre: "María López", edad: 32 },
-  { nombre: "Carlos Hernández", edad: 60 }
 ];
 
 function mostrarPacientes() {

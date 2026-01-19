@@ -21,5 +21,6 @@ function mostrarPacientes() {
 mostrarPacientes();
 
 function nuevoPaciente() {
-  alert("Aquí se abrirá el formulario de nuevo paciente");
+  let contenedor = document.getElementById("listaPacientes");
+  contenedor.innerHTML += "<div>Paciente nuevo (pendiente)</div>";
 }

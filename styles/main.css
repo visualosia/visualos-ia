@@ -22,3 +22,27 @@ input {
   padding: 8px;
   width: 200px;
 }
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #1f3c88;
+  color: white;
+  padding: 20px;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin: 10px 0;
+}
+
+.content {
+  flex: 1;
+  padding: 30px;
+  background-color: #f4f6f8;
+}

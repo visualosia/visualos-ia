@@ -19,3 +19,7 @@ function mostrarPacientes() {
 }
 
 mostrarPacientes();
+
+function nuevoPaciente() {
+  alert("Aquí se abrirá el formulario de nuevo paciente");
+}

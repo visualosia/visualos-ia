@@ -1,4 +1,6 @@
 alert("JS cargado correctamente");
+const lista = document.getElementById("listaPacientes");
+console.log("listaPacientes:", lista);
 let pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
 let pacienteActivo = null;
 
@@ -70,3 +72,8 @@ function guardarFicha() {
   localStorage.setItem("pacientes", JSON.stringify(pacientes));
   alert("Ficha guardada correctamente");
 }
+window.onload = function () {
+  function mostrarPacientes() {
+  alert("mostrarPacientes se ejecutó");
+  mostrarPacientes();
+};

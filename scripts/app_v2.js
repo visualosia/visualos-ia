@@ -1,17 +1,11 @@
-// ================================
-// ESTADO GLOBAL
-// ================================
+alert("JS cargado correctamente");
 let pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
 let pacienteActivo = null;
 
-// ================================
-// INICIO
-// ================================
+
 document.addEventListener("DOMContentLoaded", mostrarPacientes);
 
-// ================================
-// FUNCIONES
-// ================================
+
 function mostrarPacientes() {
   const lista = document.getElementById("listaPacientes");
   if (!lista) return;

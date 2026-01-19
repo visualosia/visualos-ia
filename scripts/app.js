@@ -6,9 +6,10 @@ let pacientes = [
   { nombre: "María López", edad: 32 },
   { nombre: "Carlos Hernández", edad: 60 }
 ];
-function mostrarPacientes() {
-  let contenedor = document.getElementById("listaPacientes");
-
+function nuevoPaciente() {
+  let form = document.getElementById("formPaciente");
+  form.style.display = "block";
+}
   if (!contenedor) return;
 
   pacientes.forEach(function(paciente) {
@@ -23,4 +24,23 @@ mostrarPacientes();
 function nuevoPaciente() {
   let contenedor = document.getElementById("listaPacientes");
   contenedor.innerHTML += "<div>Paciente nuevo (pendiente)</div>";
+}
+function guardarPaciente() {
+  let nombre = document.getElementById("nombrePaciente").value;
+  let edad = document.getElementById("edadPaciente").value;
+
+  if (nombre === "" || edad === "") {
+    alert("Completa todos los campos");
+    return;
+  }
+
+  pacientes.push({
+    nombre: nombre,
+    edad: edad
+  });
+
+  document.getElementById("listaPacientes").innerHTML = "";
+  mostrarPacientes();
+
+  document.getElementById("formPaciente").style.display = "none";
 }

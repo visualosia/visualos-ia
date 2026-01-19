@@ -1,5 +1,5 @@
-let pacientes = JSON.parse(localStorage.getItem("pacientes"))  || []; 
-let pacienteActivo = null; 
+let pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
+let pacienteActivo = null;
 let pacientes = [
   { nombre: "Juan Pérez", edad: 45 },
   { nombre: "María López", edad: 32 },
@@ -7,71 +7,55 @@ let pacientes = [
 ];
 
 function mostrarPacientes() {
-  let contenedor = document.getElementById("listaPacientes");
-  if (!contenedor) return;
+  let lista = document.getElementById("listaPacientes");
+  lista.innerHTML = "";
 
-  contenedor.innerHTML = "";
-
-  pacientes.forEach(function(paciente, index) {
-   
-    let div = document.createElement("div");
-    div.innerHTML = paciente.nombre + " - " + paciente.edad + " años";
-    div.style.cursor = "pointer";
-
-    div.onclick = function () {
-      abrirFichaPaciente(index);
-    };
-
-    contenedor.appendChild(div);
+  pacientes.forEach((paciente, index) => {
+    let li = document.createElement("li");
+    li.innerText = paciente.nombre + " (" + paciente.edad + " años)";
+    li.onclick = () => abrirFichaPaciente(index);
+    lista.appendChild(li);
   });
 }
 
-function nuevoPaciente() {
-  let form = document.getElementById("formPaciente");
-  if (form) {
-    form.style.display = "block";
-  }
-}
-
-function guardarPaciente() {
+function agregarPaciente() {
   let nombre = document.getElementById("nombrePaciente").value;
   let edad = document.getElementById("edadPaciente").value;
 
-  if (nombre === "" || edad === "") {
+  if (!nombre || !edad) {
     alert("Completa todos los campos");
     return;
   }
 
-let paciente = {
-  nombre: nombre,
-  edad: edad,
-  motivo: "",
-  observaciones: ""
-};
+  let paciente = {
+    nombre: nombre,
+    edad: edad,
+    motivo: "",
+    observaciones: ""
+  };
+
+  pacientes.push(paciente);
+  localStorage.setItem("pacientes", JSON.stringify(pacientes));
 
   mostrarPacientes();
-  document.getElementById("formPaciente").style.display = "none";
-}
 
-mostrarPacientes();
+  document.getElementById("nombrePaciente").value = "";
+  document.getElementById("edadPaciente").value = "";
+}
 
 function abrirFichaPaciente(index) {
   pacienteActivo = index;
   let paciente = pacientes[index];
 
-  let ficha = document.getElementById("fichaPaciente");
-  let detalle = document.getElementById("detallePaciente");
-
-  detalle.innerHTML =
+  document.getElementById("detallePaciente").innerHTML =
     "<strong>Nombre:</strong> " + paciente.nombre + "<br>" +
     "<strong>Edad:</strong> " + paciente.edad + " años";
 
   document.getElementById("motivoConsulta").value = paciente.motivo;
   document.getElementById("observaciones").value = paciente.observaciones;
 
-  ficha.style.display = "block";
+  document.getElementById("fichaPaciente").style.display = "block";
 }
-
 function guardarFicha() {
   if (pacienteActivo === null) return;
 
@@ -81,5 +65,7 @@ function guardarFicha() {
   pacientes[pacienteActivo].observaciones =
     document.getElementById("observaciones").value;
 
+  localStorage.setItem("pacientes", JSON.stringify(pacientes));
   alert("Ficha guardada correctamente");
 }
+document.addEventListener("DOMContentLoaded", mostrarPacientes);

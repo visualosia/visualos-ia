@@ -6,3 +6,16 @@ let pacientes = [
   { nombre: "María López", edad: 32 },
   { nombre: "Carlos Hernández", edad: 60 }
 ];
+function mostrarPacientes() {
+  let contenedor = document.getElementById("listaPacientes");
+
+  if (!contenedor) return;
+
+  pacientes.forEach(function(paciente) {
+    let div = document.createElement("div");
+    div.innerHTML = paciente.nombre + " - " + paciente.edad + " años";
+    contenedor.appendChild(div);
+  });
+}
+
+mostrarPacientes();

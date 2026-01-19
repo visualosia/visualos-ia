@@ -1,3 +1,4 @@
+let pacienteActivo = null; 
 let pacientes = [
   { nombre: "Juan Pérez", edad: 45 },
   { nombre: "María López", edad: 32 },
@@ -53,6 +54,7 @@ let paciente = {
 mostrarPacientes();
 
 function abrirFichaPaciente(index) {
+  pacienteActivo = index;
   let paciente = pacientes[index];
 
   let ficha = document.getElementById("fichaPaciente");
@@ -62,5 +64,20 @@ function abrirFichaPaciente(index) {
     "<strong>Nombre:</strong> " + paciente.nombre + "<br>" +
     "<strong>Edad:</strong> " + paciente.edad + " años";
 
+  document.getElementById("motivoConsulta").value = paciente.motivo;
+  document.getElementById("observaciones").value = paciente.observaciones;
+
   ficha.style.display = "block";
+}
+
+function guardarFicha() {
+  if (pacienteActivo === null) return;
+
+  pacientes[pacienteActivo].motivo =
+    document.getElementById("motivoConsulta").value;
+
+  pacientes[pacienteActivo].observaciones =
+    document.getElementById("observaciones").value;
+
+  alert("Ficha guardada correctamente");
 }

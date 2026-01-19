@@ -1,3 +1,4 @@
+let pacientes = JSON.parse(localStorage.getItem("pacientes"))  || []; 
 let pacienteActivo = null; 
 let pacientes = [
   { nombre: "Juan Pérez", edad: 45 },
@@ -6,12 +7,14 @@ let pacientes = [
 ];
 
 function mostrarPacientes() {
+  localStorage.setItem("pacientes", JSON.stringify(pacientes));
   let contenedor = document.getElementById("listaPacientes");
   if (!contenedor) return;
 
   contenedor.innerHTML = "";
 
   pacientes.forEach(function(paciente, index) {
+    localStorage.setItem("pacientes", JSON.stringify(pacientes));
     let div = document.createElement("div");
     div.innerHTML = paciente.nombre + " - " + paciente.edad + " años";
     div.style.cursor = "pointer";
@@ -25,6 +28,7 @@ function mostrarPacientes() {
 }
 
 function nuevoPaciente() {
+  localStorage.setItem("pacientes", JSON.stringify(pacientes));
   let form = document.getElementById("formPaciente");
   if (form) {
     form.style.display = "block";
@@ -32,6 +36,7 @@ function nuevoPaciente() {
 }
 
 function guardarPaciente() {
+  localStorage.setItem("pacientes", JSON.stringify(pacientes));
   let nombre = document.getElementById("nombrePaciente").value;
   let edad = document.getElementById("edadPaciente").value;
 
@@ -54,6 +59,7 @@ let paciente = {
 mostrarPacientes();
 
 function abrirFichaPaciente(index) {
+  localStorage.setItem("pacientes", JSON.stringify(pacientes));
   pacienteActivo = index;
   let paciente = pacientes[index];
 
@@ -71,12 +77,15 @@ function abrirFichaPaciente(index) {
 }
 
 function guardarFicha() {
+  localStorage.setItem("pacientes", JSON.stringify(pacientes));
   if (pacienteActivo === null) return;
 
   pacientes[pacienteActivo].motivo =
+    localStorage.setItem("pacientes", JSON.stringify(pacientes));
     document.getElementById("motivoConsulta").value;
 
   pacientes[pacienteActivo].observaciones =
+    localStorage.setItem("pacientes", JSON.stringify(pacientes));
     document.getElementById("observaciones").value;
 
   alert("Ficha guardada correctamente");

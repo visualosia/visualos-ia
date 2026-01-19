@@ -1,38 +1,49 @@
-alert("CARGÓ app_v2.js");
+// ================================
+// ESTADO GLOBAL
+// ================================
 let pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
 let pacienteActivo = null;
 
+// ================================
+// INICIO
+// ================================
+document.addEventListener("DOMContentLoaded", mostrarPacientes);
+
+// ================================
+// FUNCIONES
+// ================================
 function mostrarPacientes() {
-  let lista = document.getElementById("listaPacientes");
+  const lista = document.getElementById("listaPacientes");
+  if (!lista) return;
+
   lista.innerHTML = "";
 
   pacientes.forEach((paciente, index) => {
-    let li = document.createElement("li");
-    li.innerText = paciente.nombre + " (" + paciente.edad + " años)";
+    const li = document.createElement("li");
+    li.textContent = `${paciente.nombre} (${paciente.edad} años)`;
     li.onclick = () => abrirFichaPaciente(index);
     lista.appendChild(li);
   });
 }
 
 function agregarPaciente() {
-  let nombre = document.getElementById("nombrePaciente").value;
-  let edad = document.getElementById("edadPaciente").value;
+  const nombre = document.getElementById("nombrePaciente").value;
+  const edad = document.getElementById("edadPaciente").value;
 
   if (!nombre || !edad) {
     alert("Completa todos los campos");
     return;
   }
 
-  let paciente = {
-    nombre: nombre,
-    edad: edad,
+  const paciente = {
+    nombre,
+    edad,
     motivo: "",
     observaciones: ""
   };
 
   pacientes.push(paciente);
   localStorage.setItem("pacientes", JSON.stringify(pacientes));
-
   mostrarPacientes();
 
   document.getElementById("nombrePaciente").value = "";
@@ -41,17 +52,18 @@ function agregarPaciente() {
 
 function abrirFichaPaciente(index) {
   pacienteActivo = index;
-  let paciente = pacientes[index];
+  const paciente = pacientes[index];
 
   document.getElementById("detallePaciente").innerHTML =
-    "<strong>Nombre:</strong> " + paciente.nombre + "<br>" +
-    "<strong>Edad:</strong> " + paciente.edad + " años";
+    `<strong>Nombre:</strong> ${paciente.nombre}<br>
+     <strong>Edad:</strong> ${paciente.edad} años`;
 
   document.getElementById("motivoConsulta").value = paciente.motivo;
   document.getElementById("observaciones").value = paciente.observaciones;
 
   document.getElementById("fichaPaciente").style.display = "block";
 }
+
 function guardarFicha() {
   if (pacienteActivo === null) return;
 
@@ -64,4 +76,3 @@ function guardarFicha() {
   localStorage.setItem("pacientes", JSON.stringify(pacientes));
   alert("Ficha guardada correctamente");
 }
-document.addEventListener("DOMContentLoaded", mostrarPacientes);

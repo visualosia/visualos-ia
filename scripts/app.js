@@ -6,9 +6,6 @@ let pacientes = [
   { nombre: "María López", edad: 32 },
   { nombre: "Carlos Hernández", edad: 60 }
 ];
-function nuevoPaciente() {
-  let form = document.getElementById("formPaciente");
-  form.style.display = "block";
 }
   if (!contenedor) return;
 

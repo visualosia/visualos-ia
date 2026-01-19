@@ -39,10 +39,12 @@ function guardarPaciente() {
     return;
   }
 
-  pacientes.push({
-    nombre: nombre,
-    edad: edad
-  });
+let paciente = {
+  nombre: nombre,
+  edad: edad,
+  motivo: "",
+  observaciones: ""
+};
 
   mostrarPacientes();
   document.getElementById("formPaciente").style.display = "none";

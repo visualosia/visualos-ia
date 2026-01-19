@@ -22,8 +22,8 @@ function nuevoPaciente() {
 mostrarPacientes();
 
 function nuevoPaciente() {
-  let contenedor = document.getElementById("listaPacientes");
-  contenedor.innerHTML += "<div>Paciente nuevo (pendiente)</div>";
+  let form = document.getElementById("formPaciente");
+  form.style.display = "block";
 }
 function guardarPaciente() {
   let nombre = document.getElementById("nombrePaciente").value;

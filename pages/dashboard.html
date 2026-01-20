@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisualOS IA - Dashboard</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+        }
+        
+        .welcome-content h1 {
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+        }
+        
+        .welcome-subtitle {
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .quick-action-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .quick-action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .stat-info h3 {
+            font-size: 2rem;
+            color: var(--dark-blue);
+            margin-bottom: 0.2rem;
+        }
+        
+        .stat-info p {
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-trend {
+            font-size: 0.9rem;
+        }
+        
+        .trend-up {
+            color: var(--success);
+        }
+        
+        .trend-down {
+            color: var(--danger);
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .chart-container {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-container h4 {
+            color: var(--dark-blue);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        
+        .chart-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .bar-label {
+            width: 150px;
+            font-weight: 500;
+        }
+        
+        .bar-container {
+            flex: 1;
+            height: 20px;
+            background: var(--light-gray);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+        
+        .bar-value {
+            width: 40px;
+            text-align: right;
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+        
+        .chart-circles {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .circle-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .circle-chart {
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+        
+        .circle-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .circle-label {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+        }
+        
+        .circle-count {
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+        
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .activity-item:hover {
+            background: var(--medium-gray);
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .activity-content p {
+            margin-bottom: 0.2rem;
+            font-weight: 500;
+        }
+        
+        .activity-content small {
+            color: var(--dark-gray);
+            font-size: 0.85rem;
+        }
+        
+        .ai-insights {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .ai-insights h4 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .insight-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent-orange);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-info">
+                    <div class="avatar" id="userAvatar">U</div>
+                    <div>
+                        <h4 id="userName">Cargando...</h4>
+                        <small id="opticName">Óptica</small>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="pacientes.html" class="nav-item">
+                    <i class="fas fa-users"></i> Pacientes
+                </a>
+                <a href="historia-clinica.html" class="nav-item">
+                    <i class="fas fa-file-medical"></i> Historia Clínica
+                </a>
+                <a href="mediciones.html" class="nav-item">
+                    <i class="fas fa-ruler-combined"></i> Mediciones
+                </a>
+                <a href="armazones.html" class="nav-item">
+                    <i class="fas fa-glasses"></i> Armazones
+                </a>
+                <a href="estadisticas.html" class="nav-item">
+                    <i class="fas fa-chart-bar"></i> Estadísticas
+                </a>
+                <a href="tienda.html" class="nav-item">
+                    <i class="fas fa-shopping-cart"></i> Tienda
+                </a>
+                <a href="configuracion.html" class="nav-item">
+                    <i class="fas fa-cog"></i> Configuración
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="btn btn-outline" onclick="app.logout()" style="width: 100%;">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <!-- Banner de Bienvenida -->
+            <div class="welcome-banner">
+                <div class="welcome-content">
+                    <h1 id="welcomeMessage">Bienvenido, [Nombre]</h1>
+                    <p class="welcome-subtitle" id="welcomeSubtitle">Resumen general de tu óptica</p>
+                    
+                    <div class="quick-actions">
+                        <div class="quick-action-btn" onclick="window.location.href='pacientes.html'">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Nuevo Paciente</span>
+                        </div>
+                        <div class="quick-action-btn" onclick="window.location.href='mediciones.html'">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>Toma de Medidas</span>
+                        </div>
+                        <div class="quick-action-btn" onclick="consultarIA()">
+                            <i class="fas fa-robot"></i>
+                            <span>Consultar IA</span>
+                        </div>
+                        <div class="quick-action-btn" onclick="window.location.href='tienda.html'">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Ver Tienda</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estadísticas -->
+            <div class="stats-grid" id="statsGrid">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </div>
+
+            <!-- Gráficos y Actividad -->
+            <div class="dashboard-grid">
+                <!-- Columna Izquierda: Gráficos -->
+                <div class="dashboard-left">
+                    <div class="chart-container" id="chartDiagnosticos">
+                        <!-- Gráfico de diagnósticos -->
+                    </div>
+                    
+                    <div class="chart-container" id="chartEdades">
+                        <!-- Gráfico de edades -->
+                    </div>
+                    
+                    <div class="ai-insights">
+                        <h4><i class="fas fa-lightbulb"></i> Insights de IA</h4>
+                        <div class="insight-item">
+                            <p><strong>Patrón detectado:</strong> Aumento del 25% en diagnósticos de miopía en pacientes menores de 25 años.</p>
+                        </div>
+                        <div class="insight-item">
+                            <p><strong>Recomendación:</strong> Considerar campaña de concienciación sobre salud visual digital para jóvenes.</p>
+                        </div>
+                        <div class="insight-item">
+                            <p><strong>Oportunidad:</strong> 68% de tus pacientes usan lentes progresivos - oportunidad para upsell en tratamientos premium.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Actividad -->
+                <div class="dashboard-right">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h4>Actividad Reciente</h4>
+                            <button class="btn btn-sm btn-outline" id="actualizarDashboard">
+                                <i class="fas fa-sync-alt"></i> Actualizar
+                            </button>
+                        </div>
+                        <div id="actividadReciente">
+                            <!-- Actividad reciente -->
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h4>Próximas Citas</h4>
+                        <div class="activity-list" id="proximasCitas">
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background-color: var(--success);">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p>Juan Pérez - Control anual</p>
+                                    <small>Hoy, 10:30 AM</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background-color: var(--warning);">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p>María González - Entrega de lentes</p>
+                                    <small>Mañana, 4:00 PM</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background-color: var(--primary-blue);">
+                                    <i class="fas fa-calendar-plus"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p>Carlos Rodríguez - Primera consulta</p>
+                                    <small>Viernes, 11:00 AM</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h4>Acciones Rápidas</h4>
+                        <div class="quick-actions-vertical">
+                            <button class="btn btn-primary" onclick="generarReporteMensual()">
+                                <i class="fas fa-file-pdf"></i> Reporte Mensual
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportarDatos()">
+                                <i class="fas fa-download"></i> Exportar Datos
+                            </button>
+                            <button class="btn btn-ai" onclick="analizarTendencias()">
+                                <i class="fas fa-chart-line"></i> Analizar Tendencias
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../scripts/app.js"></script>
+    <script src="../scripts/dashboard.js"></script>
+    <script>
+        // Actualizar información del usuario
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = app.currentUser;
+            const optica = app.currentOptica;
+            
+            if (user && optica) {
+                document.getElementById('userName').textContent = user.nombre;
+                document.getElementById('opticName').textContent = optica.nombre;
+                document.getElementById('userAvatar').textContent = user.nombre.charAt(0).toUpperCase();
+                
+                document.getElementById('welcomeMessage').textContent = `Bienvenido, ${user.nombre}`;
+                document.getElementById('welcomeSubtitle').textContent = 
+                    `Resumen general de ${optica.nombre}`;
+            } else {
+                // Si no hay sesión, redirigir al login
+                window.location.href = 'login.html';
+            }
+        });
+        
+        function generarReporteMensual() {
+            alert('Generando reporte mensual en PDF...');
+            // Implementar generación de PDF
+        }
+        
+        function exportarDatos() {
+            alert('Exportando datos...');
+            // Implementar exportación
+        }
+        
+        function analizarTendencias() {
+            consultarIA();
+        }
+        
+        async function consultarIA() {
+            const analysis = await aiAssistant.analyzeSymptoms('', {});
+            alert(`Análisis IA:\n\n${analysis.recommendations.join('\n')}`);
+        }
+    </script>
+</body>
+</html>

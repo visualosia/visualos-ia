@@ -1,31 +1,131 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>VisualOS IA</title>
-    <link rel="stylesheet" href="styles/main.css" />
-  </head>
-
-  <body>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisualOS IA - Sistema Inteligente de Salud Visual</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+</head>
+<body>
     <div class="app">
-      <div class="sidebar">
-        <h2>VisualOS IA</h2>
-        <a href="index.html">Inicio</a>
-        <a href="pages/login.html">Login</a>
-        <a href="pages/pacientes.html">Pacientes</a>
-      </div>
+        <!-- Header -->
+        <header class="main-header">
+            <div class="logo-container">
+                <i class="fas fa-eye"></i>
+                <h1>VisualOS<span class="ai-text">IA</span></h1>
+            </div>
+            <nav class="main-nav">
+                <a href="#features">Características</a>
+                <a href="#about">Nosotros</a>
+                <a href="#contact">Contacto</a>
+            </nav>
+            <div class="auth-buttons">
+                <a href="pages/login.html" class="btn btn-outline">Iniciar Sesión</a>
+                <a href="pages/register.html" class="btn btn-primary">Registrar Óptica</a>
+            </div>
+        </header>
 
-      <div class="content">
-        <h1>Bienvenido</h1>
-        <p>Sistema inteligente de apoyo clínico.</p>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Sistema Inteligente de Salud Visual</h2>
+                <p class="subtitle">Plataforma integral con IA para diagnóstico, gestión de pacientes y venta de lentes</p>
+                <div class="hero-features">
+                    <span><i class="fas fa-check-circle"></i> Historia Clínica Completa</span>
+                    <span><i class="fas fa-check-circle"></i> Análisis Facial con IA</span>
+                    <span><i class="fas fa-check-circle"></i> Asistente IA para Diagnóstico</span>
+                    <span><i class="fas fa-check-circle"></i> Tienda Online Integrada</span>
+                </div>
+                <div class="hero-buttons">
+                    <a href="pages/register.html" class="btn btn-primary btn-large">
+                        <i class="fas fa-rocket"></i> Comenzar Gratis
+                    </a>
+                    <a href="#demo" class="btn btn-secondary btn-large">
+                        <i class="fas fa-play-circle"></i> Ver Demo
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="assets/images/hero-image.svg" alt="Sistema VisualOS IA">
+            </div>
+        </section>
 
-        <a href="pages/pacientes.html">
-          <button>Probar sistema</button>
-        </a>
-      </div>
+        <!-- Features -->
+        <section id="features" class="features-section">
+            <h2>Características Principales</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Historia Clínica Completa</h3>
+                    <p>Registro detallado con antecedentes, exámenes, diagnósticos y evolución del paciente.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Asistente IA</h3>
+                    <p>Diagnóstico asistido por inteligencia artificial con aprendizaje continuo.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3>Análisis Facial</h3>
+                    <p>Reconocimiento facial para recomendar armazones según forma de rostro.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-ruler-combined"></i>
+                    </div>
+                    <h3>Mediciones Precise</h3>
+                    <p>Toma de medidas interpupilar, nasopupilar y altura pupilar con precisión.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Estadísticas Avanzadas</h3>
+                    <p>Reportes y comparativas para mejorar tu práctica clínica.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3>Tienda Online</h3>
+                    <p>Venta de lentes de sol y graduación con prescripción médica.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>VisualOS IA</h3>
+                    <p>Sistema inteligente para profesionales de la salud visual.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p><i class="fas fa-envelope"></i> soporte@visualos.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <a href="#">Términos de servicio</a>
+                    <a href="#">Política de privacidad</a>
+                    <a href="#">HIPAA Compliance</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 VisualOS IA. Todos los derechos reservados.</p>
+            </div>
+        </footer>
     </div>
 
-    <a href="pages/login.html">Ingresar al sistema</a>
-
-    <script src="scripts/app_v2.js"></script>
-  </body>
+    <script src="scripts/app.js"></script>
+</body>
 </html>

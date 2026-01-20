@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisualOS IA - Mediciones Oculares</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .mediciones-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .mediciones-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .camera-section {
+            background: #1a1a2e;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        #videoFace {
+            width: 100%;
+            border-radius: var(--border-radius);
+            background: #000;
+        }
+
+        #canvasFace {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            width: calc(100% - 3rem);
+            height: calc(100% - 3rem);
+            pointer-events: none;
+        }
+
+        .controls-camera {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+
+        .measurements-display {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .measurement-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .measurement-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+
+        .measurement-unit {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        .measurement-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .ocular-diagram {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .eye-diagram {
+            display: inline-block;
+            position: relative;
+            width: 300px;
+            height: 150px;
+        }
+
+        .eye-circle {
+            width: 120px;
+            height: 120px;
+            border: 3px solid var(--primary-blue);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .eye-circle.od {
+            left: 30px;
+            background: rgba(31, 60, 136, 0.1);
+        }
+
+        .eye-circle.os {
+            right: 30px;
+            background: rgba(255, 123, 37, 0.1);
+        }
+
+        .pupil {
+            width: 20px;
+            height: 20px;
+            background: var(--dark-blue);
+            border-radius: 50%;
+            position: absolute;
+            top: 50px;
+        }
+
+        .pupil.od {
+            left: 80px;
+        }
+
+        .pupil.os {
+            right: 80px;
+        }
+
+        .measurement-line {
+            position: absolute;
+            background: var(--accent-orange);
+            height: 2px;
+        }
+
+        .dp-line {
+            width: 180px;
+            top: 60px;
+            left: 60px;
+        }
+
+        .prescription-card {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .prescription-form {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+        }
+
+        .prescription-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .prescription-cell {
+            text-align: center;
+        }
+
+        .prescription-cell label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .prescription-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .frame-recommendations {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            border-left: 5px solid var(--accent-orange);
+        }
+
+        .recommendation-card {
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--medium-gray);
+        }
+
+        .recommendation-card h5 {
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .frame-examples {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .frame-example {
+            width: 80px;
+            height: 40px;
+            border: 2px solid var(--primary-blue);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .frame-example:after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 2px;
+            background: var(--primary-blue);
+            top: 50%;
+            left: 20%;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-info">
+                    <div class="avatar" id="userAvatar">U</div>
+                    <div>
+                        <h4 id="userName">Usuario</h4>
+                        <small id="opticName">Óptica</small>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="pacientes.html" class="nav-item">
+                    <i class="fas fa-users"></i> Pacientes
+                </a>
+                <a href="historia-clinica.html" class="nav-item">
+                    <i class="fas fa-file-medical"></i> Historia Clínica
+                </a>
+                <a href="mediciones.html" class="nav-item active">
+                    <i class="fas fa-ruler-combined"></i> Mediciones
+                </a>
+                <a href="armazones.html" class="nav-item">
+                    <i class="fas fa-glasses"></i> Armazones
+                </a>
+                <a href="estadisticas.html" class="nav-item">
+                    <i class="fas fa-chart-bar"></i> Estadísticas
+                </a>
+                <a href="tienda.html" class="nav-item">
+                    <i class="fas fa-shopping-cart"></i> Tienda
+                </a>
+                <a href="configuracion.html" class="nav-item">
+                    <i class="fas fa-cog"></i> Configuración
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="mediciones-container">
+                <div class="historia-header">
+                    <div>
+                        <h2><i class="fas fa-ruler-combined"></i> Mediciones Oculares</h2>
+                        <p>Toma precisa de medidas para prescripción de lentes</p>
+                    </div>
+                    <div class="controls-camera">
+                        <button class="btn btn-primary" onclick="iniciarCamara()">
+                            <i class="fas fa-camera"></i> Iniciar Cámara
+                        </button>
+                        <button class="btn btn-secondary" onclick="detenerCamara()">
+                            <i class="fas fa-stop"></i> Detener
+                        </button>
+                        <button class="btn btn-ai" onclick="analizarFormaRostro()">
+                            <i class="fas fa-robot"></i> Analizar Rostro
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mediciones-grid">
+                    <!-- Sección de Cámara -->
+                    <div class="camera-section">
+                        <video id="videoFace" autoplay playsinline></video>
+                        <canvas id="canvasFace"></canvas>
+                    </div>
+
+                    <!-- Display de Mediciones -->
+                    <div class="measurements-display">
+                        <h3><i class="fas fa-ruler"></i> Mediciones Actuales</h3>
+                        
+                        <div class="measurement-item">
+                            <div>
+                                <strong>Distancia Pupilar (DP)</strong>
+                                <p class="measurement-unit">Distancia entre centros pupilares</p>
+                            </div>
+                            <div class="measurement-value">
+                                <span id="dpTotal">0.0</span> <span class="measurement-unit">mm</span>
+                            </div>
+                            <div class="measurement-actions">
+                                <button class="btn-icon" onclick="capturarDP()" title="Capturar">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                                <button class="btn-icon" onclick="ajustarDP()" title="Ajustar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="measurement-item">
+                            <div>
+                                <strong>DP Ojo Derecho (OD)</strong>
+                                <p class="measurement-unit">Desde nariz a pupila derecha</p>
+                            </div>
+                            <div class="measurement-value">
+                                <span id="dpOd">0.0</span> <span class="measurement-unit">mm</span>
+                            </div>
+                        </div>
+
+                        <div class="measurement-item">
+                            <div>
+                                <strong>DP Ojo Izquierdo (OS)</strong>
+                                <p class="measurement-unit">Desde nariz a pupila izquierda</p>
+                            </div>
+                            <div class="measurement-value">
+                                <span id="dpOs">0.0</span> <span class="measurement-unit">mm</span>
+                            </div>
+                        </div>
+
+                        <div class="measurement-item">
+                            <div>
+                                <strong>Altura Pupilar</strong>
+                                <p class="measurement-unit">Desde borde inferior del armazón</p>
+                            </div>
+                            <div class="measurement-value">
+                                <input type="number" id="alturaPupilar" class="prescription-input" 
+                                       style="width: 80px;" placeholder="0.0"> mm
+                            </div>
+                        </div>
+
+                        <div class="measurement-item">
+                            <div>
+                                <strong>Segmento Altura</strong>
+                                <p class="measurement-unit">Para lentes bifocales/progresivos</p>
+                            </div>
+                            <div class="measurement-value">
+                                <input type="number" id="segmentHeight" class="prescription-input" 
+                                       style="width: 80px;" placeholder="0.0"> mm
+                            </div>
+                        </div>
+
+                        <!-- Diagrama Ocular -->
+                        <div class="ocular-diagram">
+                            <h4>Diagrama de Medidas</h4>
+                            <div class="eye-diagram">
+                                <div class="eye-circle od">OD</div>
+                                <div class="eye-circle os">OS</div>
+                                <div class="pupil od"></div>
+                                <div class="pupil os"></div>
+                                <div class="measurement-line dp-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prescripción Actual -->
+                <div class="prescription-card">
+                    <h3 style="color: white;"><i class="fas fa-prescription"></i> Prescripción Actual</h3>
+                    
+                    <div class="prescription-form">
+                        <div class="prescription-row">
+                            <div class="prescription-cell">
+                                <label>Esfera</label>
+                                <input type="text" class="prescription-input" placeholder="+0.00">
+                            </div>
+                            <div class="prescription-cell">
+                                <label>Cilindro</label>
+                                <input type="text" class="prescription-input" placeholder="-0.00">
+                            </div>
+                            <div class="prescription-cell">
+                                <label>Eje</label>
+                                <input type="number" class="prescription-input" placeholder="90" min="0" max="180">
+                            </div>
+                            <div class="prescription-cell">
+                                <label>Adición</label>
+                                <input type="text" class="prescription-input" placeholder="+0.00">
+                            </div>
+                            <div class="prescription-cell">
+                                <label>Prisma</label>
+                                <input type="text" class="prescription-input" placeholder="0.00">
+                            </div>
+                        </div>
+                        
+                        <div class="prescription-row">
+                            <div class="prescription-cell">
+                                <label style="color: #4dabf7;">OD</label>
+                                <input type="text" class="prescription-input" placeholder="+1.50">
+                            </div>
+                            <div class="prescription-cell">
+                                <label style="color: #4dabf7;">OD</label>
+                                <input type="text" class="prescription-input" placeholder="-0.75">
+                            </div>
+                            <div class="prescription-cell">
+                                <label style="color: #4dabf7;">OD</label>
+                                <input type="number" class="prescription-input" placeholder="90">
+                            </div>
+                            <div class="prescription-cell">
+                                <label style="color: #4dabf7;">OD</label>
+                                <input type="text" class="prescription-input" placeholder="+2.00">
+                            </div>
+                            <div class="prescription-cell">
+                                <label style="color: #4dabf7;">OD</label>
+                                <input type="text" class="prescription-input" placeholder="1.00">
+                            </div>
+                        </div>
+                        
+                        <div class="prescription-row">
+                            <div class="prescription-cell">
+                                <label style="color: #ffa94d;">OS</label>
+                                <input type="text" class="prescription-input" placeholder="+1.50">
+                            </div>
+                            <div class="prescription-cell">
+                                <label style="color: #ffa94d;">OS</label>
+                                <input type="text" class="prescription-input" placeholder="-0.75">
+                            </div>
+                            <div class="prescription-cell">
+                                <label style="color: #ffa94d;">OS</label>
+                                <input type="number" class="prescription-input" placeholder="90">
+                            </div>
+                            <div class="prescription-cell">
+                                <label style="color: #ffa94d;">OS</label>
+                                <input type="text" class="prescription-input" placeholder="+2.00">
+                            </div>
+                            <div class="prescription-cell">
+                                <label style="color: #ffa94d;">OS</label>
+                                <input type="text" class="prescription-input" placeholder="1.00">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recomendaciones de Armazón -->
+                <div class="frame-recommendations" id="resultadosAnalisis">
+                    <h3><i class="fas fa-glasses"></i> Recomendaciones de Armazón</h3>
+                    <p>Basadas en las medidas y forma de rostro</p>
+                    
+                    <div class="recommendation-card">
+                        <h5>Armazones Rectangulares</h5>
+                        <p><em>Ideal para rostros redondos y ovalados. Equilibra las proporciones faciales.</em></p>
+                        
+                        <div class="frame-examples">
+                            <div class="frame-example"></div>
+                            <div class="frame-example"></div>
+                            <div class="frame-example"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation-card">
+                        <h5>Armazones Redondos</h5>
+                        <p><em>Perfectos para rostros cuadrados. Suavizan los ángulos marcados.</em></p>
+                        
+                        <div class="frame-examples">
+                            <div class="frame-example" style="border-radius: 50%;"></div>
+                            <div class="frame-example" style="border-radius: 50%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation-card">
+                        <h5>Armazones Aviador</h5>
+                        <p><em>Versátiles para la mayoría de formas de rostro. Estilo clásico y moderno.</em></p>
+                        
+                        <div class="frame-examples">
+                            <div class="frame-example" style="height: 30px;"></div>
+                            <div class="frame-example" style="height: 30px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acciones Finales -->
+                <div class="form-actions" style="margin-top: 2rem;">
+                    <button class="btn btn-primary btn-large" onclick="guardarMediciones()">
+                        <i class="fas fa-save"></i> Guardar Todas las Mediciones
+                    </button>
+                    <button class="btn btn-secondary" onclick="generarReporte()">
+                        <i class="fas fa-file-pdf"></i> Generar Reporte PDF
+                    </button>
+                    <button class="btn btn-ai" onclick="consultarRecomendacionesIA()">
+                        <i class="fas fa-robot"></i> Recomendaciones IA
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../scripts/app.js"></script>
+    <script src="../scripts/ai-assistant.js"></script>
+    <script src="../scripts/facial-analysis.js"></script>
+    <script>
+        function ajustarDP() {
+            const nuevaDP = prompt("Ingrese nueva distancia pupilar (mm):");
+            if (nuevaDP && !isNaN(nuevaDP)) {
+                document.getElementById('dpTotal').textContent = parseFloat(nuevaDP).toFixed(1);
+                document.getElementById('dpOd').textContent = (parseFloat(nuevaDP) / 2).toFixed(1);
+                document.getElementById('dpOs').textContent = (parseFloat(nuevaDP) / 2).toFixed(1);
+            }
+        }
+
+        function guardarMediciones() {
+            const mediciones = {
+                dpTotal: document.getElementById('dpTotal').textContent,
+                dpOd: document.getElementById('dpOd').textContent,
+                dpOs: document.getElementById('dpOs').textContent,
+                alturaPupilar: document.getElementById('alturaPupilar').value,
+                segmentHeight: document.getElementById('segmentHeight').value,
+                fecha: new Date().toLocaleString()
+            };
+            
+            localStorage.setItem('ultimasMediciones', JSON.stringify(mediciones));
+            alert('Mediciones guardadas correctamente');
+        }
+
+        function generarReporte() {
+            alert('Generando reporte PDF... (Funcionalidad en desarrollo)');
+        }
+
+        async function consultarRecomendacionesIA() {
+            const dpTotal = document.getElementById('dpTotal').textContent;
+            const alturaPupilar = document.getElementById('alturaPupilar').value;
+            
+            const recomendaciones = await aiAssistant.recommendLenses(
+                { edad: 30 }, 
+                { dp: parseFloat(dpTotal) },
+                []
+            );
+            
+            alert(`Recomendación IA:\n\n${JSON.stringify(recomendaciones, null, 2)}`);
+        }
+
+        // Cargar mediciones guardadas
+        window.onload = function() {
+            const saved = localStorage.getItem('ultimasMediciones');
+            if (saved) {
+                const mediciones = JSON.parse(saved);
+                document.getElementById('dpTotal').textContent = mediciones.dpTotal;
+                document.getElementById('dpOd').textContent = mediciones.dpOd;
+                document.getElementById('dpOs').textContent = mediciones.dpOs;
+                document.getElementById('alturaPupilar').value = mediciones.alturaPupilar;
+                document.getElementById('segmentHeight').value = mediciones.segmentHeight;
+            }
+        };
+    </script>
+</body>
+</html>

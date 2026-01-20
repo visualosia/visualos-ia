@@ -1,32 +1,85 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>VisualOS IA - Login</title>
-    <link rel="stylesheet" href="../styles/main.css" />
-  </head>
-  <body>
-    <h1>VisualOS IA</h1>
-    <h2>Ingreso al sistema</h2>
-    <div class="app">
-  <div class="sidebar">
-    <h2>VisualOS IA</h2>
-    <a href="../index.html">Inicio</a>
-    <a href="login.html">Login</a>
-    <a href="pacientes.html">Pacientes</a>
-  </div>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisualOS IA - Iniciar Sesión</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <div class="logo-container" style="justify-content: center;">
+                    <i class="fas fa-eye"></i>
+                    <h2 style="color: white;">VisualOS<span class="ai-text">IA</span></h2>
+                </div>
+                <p style="margin-top: 1rem; opacity: 0.9;">Sistema de gestión óptica inteligente</p>
+            </div>
+            
+            <div class="auth-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="opticName">Nombre de la Óptica</label>
+                        <select id="opticName" class="form-control" required>
+                            <option value="">Seleccione su óptica</option>
+                            <!-- Se cargará dinámicamente desde la BD -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="username">Usuario</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="username" class="form-control" placeholder="Usuario" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" class="form-control" placeholder="Contraseña" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                        </button>
+                    </div>
+                    
+                    <div class="form-group text-center">
+                        <a href="forgot-password.html" style="color: var(--primary-blue); text-decoration: none;">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    </div>
+                    
+                    <div class="divider">
+                        <span>O</span>
+                    </div>
+                    
+                    <div class="form-group text-center">
+                        <p>¿No tienes una cuenta?</p>
+                        <a href="register.html" class="btn btn-outline" style="width: 100%;">
+                            <i class="fas fa-clinic-medical"></i> Registrar Nueva Óptica
+                        </a>
+                    </div>
+                </form>
+                
+                <div class="security-info">
+                    <p style="font-size: 0.9rem; color: var(--dark-gray); text-align: center;">
+                        <i class="fas fa-shield-alt"></i> Sistema seguro y compatible con HIPAA
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <div class="content">
-    <h1>Login</h1>
-    <input type="text" placeholder="Usuario" /><br /><br />
-    <input type="password" placeholder="Contraseña" /><br /><br />
-    <button>Entrar</button>
-  </div>
-</div>
-
-    <input placeholder="Usuario" />
-    <br /><br />
-    <input placeholder="Contraseña" type="password" />
-    <br /><br />
-    <button>Entrar</button>
-  </body>
+    <script src="../scripts/auth.js"></script>
+</body>
 </html>

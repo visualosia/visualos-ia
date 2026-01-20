@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisualOS IA - Registrar Óptica</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .register-steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            gap: 2rem;
+        }
+        
+        .step {
+            text-align: center;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--medium-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-weight: bold;
+            color: var(--dark-gray);
+        }
+        
+        .step.active .step-number {
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        .step.completed .step-number {
+            background: var(--success);
+            color: white;
+        }
+        
+        .register-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .register-form {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--medium-gray);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <div class="logo-container" style="justify-content: center;">
+                    <i class="fas fa-eye"></i>
+                    <h2 style="color: white;">VisualOS<span class="ai-text">IA</span></h2>
+                </div>
+                <p style="margin-top: 1rem; opacity: 0.9;">Registro de nueva óptica</p>
+            </div>
+            
+            <div class="register-container">
+                <!-- Pasos -->
+                <div class="register-steps">
+                    <div class="step active" id="step1">
+                        <div class="step-number">1</div>
+                        <span>Datos de la Óptica</span>
+                    </div>
+                    <div class="step" id="step2">
+                        <div class="step-number">2</div>
+                        <span>Usuario Administrador</span>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="step-number">3</div>
+                        <span>Confirmación</span>
+                    </div>
+                </div>
+                
+                <!-- Formulario -->
+                <form id="registerForm" class="register-form">
+                    <!-- Paso 1: Datos de la Óptica -->
+                    <div id="step1-form" class="form-step active">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">
+                            <i class="fas fa-clinic-medical"></i> Información de la Óptica
+                        </h3>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="opticaNombre">Nombre de la Óptica *</label>
+                                <input type="text" id="opticaNombre" name="opticaNombre" 
+                                       class="form-control" required placeholder="Ej: Óptica Visual Center">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="opticaEmail">Email de la Óptica *</label>
+                                <input type="email" id="opticaEmail" name="opticaEmail" 
+                                       class="form-control" required placeholder="contacto@optica.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="opticaTelefono">Teléfono *</label>
+                                <input type="tel" id="opticaTelefono" name="opticaTelefono" 
+                                       class="form-control" required placeholder="+52 123 456 7890">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="opticaDireccion">Dirección *</label>
+                                <textarea id="opticaDireccion" name="opticaDireccion" 
+                                          class="form-control" rows="3" required 
+                                          placeholder="Calle, número, colonia, ciudad, estado, código postal"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="opticaRfc">RFC (Opcional)</label>
+                                <input type="text" id="opticaRfc" name="opticaRfc" 
+                                       class="form-control" placeholder="RFC de la empresa">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="opticaWeb">Sitio Web (Opcional)</label>
+                                <input type="url" id="opticaWeb" name="opticaWeb" 
+                                       class="form-control" placeholder="https://www.mioptica.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <div></div>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(2)">
+                                Siguiente <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Paso 2: Usuario Administrador -->
+                    <div id="step2-form" class="form-step">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">
+                            <i class="fas fa-user-shield"></i> Usuario Administrador
+                        </h3>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="nombre">Nombre Completo *</label>
+                                <input type="text" id="nombre" name="nombre" 
+                                       class="form-control" required placeholder="Ej: Juan Pérez López">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Personal *</label>
+                                <input type="email" id="email" name="email" 
+                                       class="form-control" required placeholder="juan@email.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="username">Nombre de Usuario *</label>
+                                <input type="text" id="username" name="username" 
+                                       class="form-control" required placeholder="Ej: juan.perez">
+                                <small class="form-text">Este será tu usuario para iniciar sesión</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="password">Contraseña *</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="password" name="password" 
+                                           class="form-control" required minlength="6">
+                                    <button type="button" class="toggle-password" onclick="authSystem.togglePassword()">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <small class="form-text">Mínimo 6 caracteres</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirmar Contraseña *</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="confirmPassword" name="confirmPassword" 
+                                           class="form-control" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="telefonoPersonal">Teléfono Personal</label>
+                                <input type="tel" id="telefonoPersonal" name="telefonoPersonal" 
+                                       class="form-control" placeholder="+52 123 456 7890">
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" onclick="prevStep(1)">
+                                <i class="fas fa-arrow-left"></i> Anterior
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(3)">
+                                Siguiente <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Paso 3: Confirmación -->
+                    <div id="step3-form" class="form-step">
+                        <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">
+                            <i class="fas fa-clipboard-check"></i> Confirmar Registro
+                        </h3>
+                        
+                        <div class="confirmation-summary">
+                            <div class="summary-section">
+                                <h4><i class="fas fa-clinic-medical"></i> Datos de la Óptica</h4>
+                                <div class="summary-content" id="opticaSummary"></div>
+                            </div>
+                            
+                            <div class="summary-section">
+                                <h4><i class="fas fa-user-shield"></i> Usuario Administrador</h4>
+                                <div class="summary-content" id="userSummary"></div>
+                            </div>
+                            
+                            <div class="terms-agreement">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="acceptTerms" required>
+                                    <span>Acepto los <a href="#" onclick="showTerms()">Términos y Condiciones</a> 
+                                    y la <a href="#" onclick="showPrivacy()">Política de Privacidad</a></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" onclick="prevStep(2)">
+                                <i class="fas fa-arrow-left"></i> Anterior
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-check-circle"></i> Completar Registro
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                <div class="text-center mt-3">
+                    <p>¿Ya tienes una cuenta? <a href="login.html" style="color: var(--primary-blue);">Inicia sesión aquí</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/app.js"></script>
+    <script src="../scripts/api-mock.js"></script>
+    <script src="../scripts/auth.js"></script>
+    <script>
+        let currentStep = 1;
+        
+        function nextStep(step) {
+            // Validar paso actual antes de avanzar
+            if (step === 2 && !validateStep1()) return;
+            if (step === 3 && !validateStep2()) return;
+            
+            // Ocultar paso actual
+            document.getElementById(`step${currentStep}-form`).classList.remove('active');
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            // Mostrar nuevo paso
+            currentStep = step;
+            document.getElementById(`step${step}-form`).classList.add('active');
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            // Actualizar pasos completados
+            for (let i = 1; i < step; i++) {
+                document.getElementById(`step${i}`).classList.add('completed');
+            }
+            
+            // Si es el paso 3, generar resumen
+            if (step === 3) {
+                generateSummary();
+            }
+        }
+        
+        function prevStep(step) {
+            // Ocultar paso actual
+            document.getElementById(`step${currentStep}-form`).classList.remove('active');
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            // Mostrar paso anterior
+            currentStep = step;
+            document.getElementById(`step${step}-form`).classList.add('active');
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            // Remover completado de pasos siguientes
+            for (let i = step + 1; i <= 3; i++) {
+                document.getElementById(`step${i}`).classList.remove('completed');
+            }
+        }
+        
+        function validateStep1() {
+            const requiredFields = ['opticaNombre', 'opticaEmail', 'opticaTelefono', 'opticaDireccion'];
+            
+            for (const fieldId of requiredFields) {
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    authSystem.showError(`Por favor complete el campo: ${field.previousElementSibling.textContent}`);
+                    field.focus();
+                    return false;
+                }
+            }
+            
+            // Validar email
+            const emailField = document.getElementById('opticaEmail');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailField.value)) {
+                authSystem.showError('Por favor ingrese un email válido');
+                emailField.focus();
+                return false;
+            }
+            
+            return true;
+        }
+        
+        function validateStep2() {
+            const requiredFields = ['nombre', 'email', 'username', 'password', 'confirmPassword'];
+            
+            for (const fieldId of requiredFields) {
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    authSystem.showError(`Por favor complete el campo: ${field.previousElementSibling?.textContent || fieldId}`);
+                    field.focus();
+                    return false;
+                }
+            }
+            
+            // Validar contraseñas
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password.length < 6) {
+                authSystem.showError('La contraseña debe tener al menos 6 caracteres');
+                return false;
+            }
+            
+            if (password !== confirmPassword) {
+                authSystem.showError('Las contraseñas no coinciden');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        function generateSummary() {
+            // Resumen de la óptica
+            const opticaSummary = document.getElementById('opticaSummary');
+            opticaSummary.innerHTML = `
+                <p><strong>Nombre:</strong> ${document.getElementById('opticaNombre').value}</p>
+                <p><strong>Email:</strong> ${document.getElementById('opticaEmail').value}</p>
+                <p><strong>Teléfono:</strong> ${document.getElementById('opticaTelefono').value}</p>
+                <p><strong>Dirección:</strong> ${document.getElementById('opticaDireccion').value}</p>
+            `;
+            
+            // Resumen del usuario
+            const userSummary = document.getElementById('userSummary');
+            userSummary.innerHTML = `
+                <p><strong>Nombre:</strong> ${document.getElementById('nombre').value}</p>
+                <p><strong>Email:</strong> ${document.getElementById('email').value}</p>
+                <p><strong>Usuario:</strong> ${document.getElementById('username').value}</p>
+            `;
+        }
+        
+        function showTerms() {
+            alert('Términos y Condiciones de VisualOS IA... (Mostrar ventana modal con términos)');
+        }
+        
+        function showPrivacy() {
+            alert('Política de Privacidad de VisualOS IA... (Mostrar ventana modal con política)');
+        }
+    </script>
+</body>
+</html>
